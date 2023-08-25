@@ -1,0 +1,58 @@
+#shader vertex 
+#version 330 core
+        
+layout(location = 0) in vec2 position;
+
+
+void main()
+{
+    gl_Position= vec4(position.x, position.y, 0.0, 1.0);
+};     
+
+#shader fragment
+#version 330 core
+        
+out vec4 fragColor;
+uniform vec4 f_Pencolor;    
+
+
+void main()
+{
+    fragColor = f_Pencolor;
+};
+
+
+#shader geometry
+#version 330 core
+
+layout (lines) in;
+layout (triangle_strip, max_vertices = 4) out;
+
+uniform float lineWidth ; // Adjust this value for desired line width
+
+void main()
+{
+    vec2 p0 = gl_in[0].gl_Position.xy;
+    vec2 p1 = gl_in[1].gl_Position.xy;
+
+    vec2 dir = normalize(p1 - p0);
+    vec2 vertical = vec2(-dir.y, dir.x); // This gives a vertical vector
+
+    vec2 normal = vertical * lineWidth * 0.5;
+    vec2 normald = dir * lineWidth * 0.5;
+
+    gl_Position = vec4(p0 - normal-normald, 0.0, 1.0);
+    EmitVertex();
+
+    gl_Position = vec4(p1 - normal+normald, 0.0, 1.0);
+    EmitVertex();
+
+    gl_Position = vec4(p0 + normal-normald, 0.0, 1.0);
+    EmitVertex();
+
+    gl_Position = vec4(p1 + normal+normald, 0.0, 1.0);
+    EmitVertex();
+
+    EndPrimitive();
+}
+
