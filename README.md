@@ -4,3 +4,5 @@ intricate shapes, graphs, and other complex designs that are traditionally chall
 
 In this beta phase, you may encounter occasional errors, and i acknowledge that some key features are still in progress.
 If you encounter any bugs or errors while using Zopa, i will appreciate that you report them. Your vigilance helps us identify and resolve issues faster.
+
+To use the App double click on painter/painter.exe
