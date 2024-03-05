@@ -4,6 +4,8 @@
 #include "global.h"
 #include "imgui/imgui.h"
 #include "vendor/glm/glm.hpp"
+#include "Shapes.h"
+#include "text.h"
 
 
 const int FLOATS_NUM = 2;
@@ -12,21 +14,17 @@ const int MAX_POINTS_IN_LINE = 100000;
 
 
 
-extern bool ctrlPressed;
-extern float* controledSize;
-extern glm::vec2* controledPos;
-extern bool moving ;
+
 extern ImVec4 pen_color ;
 extern float pen_width ;
+extern int CURR_NUM_LINES_BUFFERED ;
+extern std::vector<ImVec4> LINE_COLOR_ARRAY;
+extern std::vector<float> LINE_WIDTH_ARRAY;
+extern std::vector<std::vector<GLfloat>> pointesArry;
 
-//extern VertexArry VA[MAX_LINESS];
-//extern VertexBuffer VB[MAX_LINESS];
-extern int CURR_NUM_LINES;
-extern int CURR_NUM_LINES_BUFFERED;
-extern int NUM_POINTS_ARRAY[MAX_LINESS] ;
-extern ImVec4 LINE_COLOR_ARRAY[MAX_LINESS] ;
-extern float LINE_WIDTH_ARRAY[MAX_LINESS];
-extern GLfloat pointesArry[MAX_LINESS][MAX_POINTS_IN_LINE];
+extern std::vector<GLfloat> lastDeletedPen;
+extern ImVec4 lastDeletedPenColor;
+extern float lastDeletedPenWidth;
 
 
 extern void PenReset();

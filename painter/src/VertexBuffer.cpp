@@ -1,7 +1,7 @@
 #include "VertexBuffer.h"
 
 VertexBuffer::VertexBuffer(const void* data, unsigned int size)
-{//TODO WATCH OUT
+{
 	GLCall(glGenBuffers(1, &m_RendererID));
 	GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_RendererID));
 	GLCall(glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW));
@@ -15,6 +15,9 @@ VertexBuffer::~VertexBuffer()
 
 void VertexBuffer::Bind() const
 {
+	GLint boundBuffer;
+	glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &boundBuffer);
+	//printf(" id:%d\n", boundBuffer);
 	GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_RendererID));
 }
 

@@ -11,25 +11,20 @@ Shader::Shader(const std::string& filepath, bool withGeo):m_FilePath(filepath),m
     ShaderProgramSource source = ParseShader(filepath);
     
     
-    
     m_RendererID = createShaders(source.vertexShader,source.geometryShader, source.fragmentShader);
 }
 Shader::~Shader()
 {
     GLCall(glDeleteProgram(m_RendererID));
 }
-
 void Shader::Bind() const
 {
     GLCall(glUseProgram(m_RendererID));
 }
-
 void Shader::UnBind() const
 {
     (glUseProgram(0));
 }
-
-
 void Shader::SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3)
 {
     GLCall(glUniform4f(GetUniformLocation(name), v0, v1, v2, v3));
@@ -39,13 +34,18 @@ void Shader::SetUniform1f(const std::string& name, float v0)
     GLCall(glUniform1f(GetUniformLocation(name), v0));
 
 }
+void Shader::SetUniform1i(const std::string& name, int v0)
+{
+    GLCall(glUniform1i(GetUniformLocation(name), v0));
+
+}
 int Shader::GetUniformLocation(const std::string& name)
 {
     if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
         return m_UniformLocationCache[name];
     GLCall(int location = glGetUniformLocation(m_RendererID, name.c_str()));
     if (location == -1)
-        std::cout << "warning:uniform" << name.c_str() << std::endl;
+        std::cout << "warning:uniform " << name.c_str() << std::endl;
     
     m_UniformLocationCache[name] = location;
     return location;
@@ -104,7 +104,6 @@ unsigned int Shader::compileShader(unsigned int type, const std::string& source)
     }
     return id;
 }
-
  ShaderProgramSource Shader::ParseShader(const std::string& filePath)
 {
 

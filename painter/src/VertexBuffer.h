@@ -7,7 +7,7 @@
 class VertexBuffer
 {
 public:
-	VertexBuffer(){}
+	VertexBuffer():m_RendererID(-1) {}
 	VertexBuffer(const void* data,unsigned int size);
 	~VertexBuffer();
 	void Bind() const;

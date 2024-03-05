@@ -17,7 +17,6 @@ void VertexArry::Bind() const
 
 }
 
-
 void VertexArry::UnBind() const
 {
 	GLCall(glBindVertexArray(0));

@@ -13,12 +13,12 @@ void main()
 #version 330 core
         
 out vec4 fragColor;
-uniform vec4 f_Pencolor;    
+uniform vec4 f_shapecolor;    
 
 
 void main()
 {
-    fragColor = f_Pencolor;
+    fragColor = f_shapecolor;
 };
 
 

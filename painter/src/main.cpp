@@ -5,6 +5,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <array>
 
 #include "Renderer.h"
 #include "VertexBufferLayout.h"
@@ -17,19 +18,22 @@
 #include "MyImgui.h"
 #include "global.h"
 #include "KeyBoardInput.h"
+#include "text.h"
+#include "Texture.h"
+
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
+#include "vendor/stb/stb_image.h"
 
 
-
-
-
+GLFWwindow* window;
 void Init()
 {
+
 	// Init GLFW
 	if (!glfwInit())
 		exit(-1);
@@ -39,8 +43,9 @@ void Init()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+	
 	// Create a GLFWwindow object that we can use for GLFW's functions
-	window = glfwCreateWindow(WIDTH, HEIGHT, "painter CTRL", nullptr, nullptr);
+	window = glfwCreateWindow(WIDTH, HEIGHT, "ZOOPA", nullptr, nullptr);
 	int screenWidth, screenHeight;
 	glfwGetFramebufferSize(window, &screenWidth, &screenHeight);
 	if (nullptr == window)
@@ -50,8 +55,6 @@ void Init()
 		exit(-1);
 	}
 	glfwMakeContextCurrent(window);
-	glfwSetMouseButtonCallback(window, mouse_button_callback);
-	glfwSetScrollCallback(window, ScrollCallback);
 	glewExperimental = GL_TRUE;
 	// Initialize GLEW to setup the OpenGL Function pointers
 	if (GLEW_OK != glewInit())
@@ -61,19 +64,34 @@ void Init()
 	}
 	// Define the viewport dimensions
 	glViewport(0, 0, screenWidth, screenHeight);
-	ImguiInit();
+	ImguiInit(window);
 
 	glEnable(GL_PROGRAM_POINT_SIZE);
+
+	//input callbacks
 	glfwSetMouseButtonCallback(window, mouse_button_callback);
 	glfwSetKeyCallback(window, KeyCalBack);
-	glfwSwapInterval(0);
+	glfwSetMouseButtonCallback(window, mouse_button_callback);
+	glfwSetScrollCallback(window, ScrollCallback);
+	glfwSetCharModsCallback(window, KeyCharCalBack);
 
+
+	glfwSwapInterval(0);
+	init_text_rendering("src/vendor/text_fonts/freemono.png"
+		, "src/vendor/text_fonts/freemono.meta", WIDTH, HEIGHT);
+	
+	
+
+	//for exec
+	//init_text_rendering("../../painter/src/vendor/text_fonts/freemono.png"
+	//, "../../painter/src/vendor/text_fonts/freemono.meta", WIDTH, HEIGHT);
+	
 }
 
 void Exit(VertexArry* VA, VertexBuffer* VB)
 {
 	ImguieDestroy();
-	for (int i = 0; i < CURR_NUM_LINES; i++) {
+	for (int i = 0; i < (int)pointesArry.size()-1; i++) {
 		glDeleteVertexArrays(1, &VA[i].m_RendererID);
 		glDeleteBuffers(1, &VB[i].m_RendererID);
 	}
@@ -87,14 +105,25 @@ int main()
 	VertexArry VA[MAX_LINESS];
 	VertexBuffer VB[MAX_LINESS];
 	Renderer renderer;
-	Shader penShader("res/shaders/PenshaderV3.0.txt",true);
+	 
+	/*Shader penShader("../../painter/res/shaders/PenshaderV3.0.txt",true);
+	Shader ShapeShader("../../painter/res/shaders/ShapeshaderV1.0.txt",false);	
+	Shader TextureShader("../../painter/res/shaders/TextureShaderV1.0.txt", false);
+	Texture texture("../../painter/res/textures/1214428.png");*/
 
 
-	Shader ShapeShader("res/shaders/ShapeshaderV1.0.txt",false);
-	ShapeShader.Bind();
+	//for exec
+	Shader penShader("res/shaders/PenshaderV3.0.txt", true);
+	Shader ShapeShader("res/shaders/ShapeshaderV1.0.txt", false);	
+	Shader TextureShader("res/shaders/TextureShaderV1.0.txt", false);	
+	Texture texture("res/textures/1214428.png");
+	
 
-	bool running = true;
+	GLuint tex1, tex2;
+	
+	
 	double lastTime = 0.0;
+	double xpos, ypos;
 	while (!glfwWindowShouldClose(window))
 	{				
 		double time = glfwGetTime();
@@ -102,19 +131,27 @@ int main()
 		if (deltaTime >= 1.0 / maxFPS)
 		{
 			lastTime = time;
-			if (moving) {
-				double xpos, ypos;
+			if (mode==Mode::PenMode) {
+				
 				glfwGetCursorPos(window, &xpos, &ypos);
 				addPoint(xpos, ypos);
 			}
 			VA[0].UnBind();
-			ImguieSetup();
+			
 			renderer.Clear();
 			renderer.SetBackGroundColor(1.0f, 1.0f, 1.0f, 1.0f);
 			renderer.DrawPen(VA, &penShader, VB);
-			renderer.DrawShapes(&ShapeShader);
+			renderer.DrawShapes(&ShapeShader); 	
+			draw_texts();						
+
+			if (mode == Mode::DeleteMode)
+			{
+
+				renderer.DrawDeleteButtons(&TextureShader,&texture);
+			}
+
 			glfwPollEvents();
-			ImguiMenu();
+			ImguiEveryFrame();
 			glfwSwapBuffers(window);
 		}
 	}

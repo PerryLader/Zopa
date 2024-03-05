@@ -15,10 +15,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="res\shaders\shaderV1.0.txt" />
-    <Text Include="res\shaders\shaderV2.0.txt" />
     <Text Include="res\shaders\PenshaderV3.0.txt" />
     <Text Include="res\shaders\ShapeshaderV1.0.txt" />
+    <Text Include="res\shaders\TextureShaderV1.0.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -67,6 +66,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\KeyBoardInput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vendor\imgui\imgui_demo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vendor\stb\stb_image.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\text.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1004,10 +1015,13 @@
     <ClInclude Include="src\Shapes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\SqureUnit.h">
+    <ClInclude Include="src\vendor\stb\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\CircleUnit.h">
+    <ClInclude Include="src\text.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1439,5 +1453,21 @@
     <None Include="depen\GLEW\doc\install.html" />
     <None Include="depen\GLEW\doc\log.html" />
     <None Include="depen\GLEW\doc\wglew.html" />
+    <None Include="src\vendor\text_fonts\freemono.meta" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="src\vendor\text_fonts\freemono.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\textures\1214428.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="res\ImguiFonts\Bavex-jEwzl.ttf" />
+    <Font Include="res\ImguiFonts\Ghoas-nR7xR.ttf" />
+    <Font Include="res\ImguiFonts\OriginalQualityDemoRegular-vmmPM.otf" />
+    <Font Include="res\ImguiFonts\ShortBaby-Mg2w.ttf" />
+    <Font Include="res\ImguiFonts\HadirSans-8MpeJ.otf" />
   </ItemGroup>
 </Project>
